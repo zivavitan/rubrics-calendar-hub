@@ -23,9 +23,10 @@ const Login = () => {
     e.preventDefault();
     
     // Simple mock login - in real app, would validate against backend
-    const success = login(email, password);
+    login(email, password);
     
-    if (success) {
+    // For demo purposes, consider admin@example.com as a valid login
+    if (email === 'admin@example.com') {
       toast.success('Login successful');
     } else {
       toast.error('Invalid credentials. Hint: try admin@example.com');
