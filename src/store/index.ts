@@ -1,4 +1,3 @@
-
 import { create } from 'zustand';
 import { DutyWithUser, RubricType, User } from '../types';
 import { addMonths, format, subMonths } from 'date-fns';
@@ -29,6 +28,11 @@ interface DutyState {
   // Selectors
   getDutiesForDate: (date: string) => DutyWithUser[];
   getDutiesForMonth: (year: number, month: number) => DutyWithUser[];
+  
+  // Rubric management
+  addRubric: (rubric: RubricType) => void;
+  removeRubric: (rubric: RubricType) => void;
+  updateRubric: (oldRubric: RubricType, newRubric: RubricType) => void;
 }
 
 // Mock data
@@ -163,5 +167,24 @@ export const useStore = create<DutyState>((set, get) => ({
       const dutyDate = new Date(duty.date);
       return dutyDate.getFullYear() === year && dutyDate.getMonth() === month;
     });
+  },
+  
+  addRubric: (rubric: RubricType) => {
+    set(state => ({ rubrics: [...state.rubrics, rubric] }));
+  },
+  
+  removeRubric: (rubric: RubricType) => {
+    set(state => ({
+      rubrics: state.rubrics.filter(r => r !== rubric)
+    }));
+  },
+  
+  updateRubric: (oldRubric: RubricType, newRubric: RubricType) => {
+    set(state => ({
+      rubrics: state.rubrics.map(r => r === oldRubric ? newRubric : r),
+      duties: state.duties.map(duty => 
+        duty.type === oldRubric ? { ...duty, type: newRubric } : duty
+      )
+    }));
   }
 }));

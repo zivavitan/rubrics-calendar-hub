@@ -1,13 +1,8 @@
 
-export type RubricType = 
-  | "Primary On-Call" 
-  | "Secondary On-Call" 
-  | "Operations" 
-  | "Support" 
-  | "Maintenance";
+export type RubricType = string;
 
 export type RubricColor = {
-  [key in RubricType]: string;
+  [key: string]: string;
 };
 
 export interface User {

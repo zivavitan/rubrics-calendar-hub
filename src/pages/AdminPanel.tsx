@@ -5,6 +5,7 @@ import { useStore } from '@/store';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import UserManagement from '@/components/UserManagement';
 import DutyManagement from '@/components/DutyManagement';
+import RubricManagement from '@/components/RubricManagement';
 import Login from '@/components/Login';
 import { Navigate } from 'react-router-dom';
 
@@ -31,6 +32,7 @@ const AdminPanel = () => {
             <TabsList className="mb-6">
               <TabsTrigger value="duties">Manage Duties</TabsTrigger>
               <TabsTrigger value="users">Manage Users</TabsTrigger>
+              <TabsTrigger value="rubrics">Manage Duty Types</TabsTrigger>
             </TabsList>
             
             <TabsContent value="duties">
@@ -39,6 +41,10 @@ const AdminPanel = () => {
             
             <TabsContent value="users">
               <UserManagement />
+            </TabsContent>
+            
+            <TabsContent value="rubrics">
+              <RubricManagement />
             </TabsContent>
           </Tabs>
         </div>

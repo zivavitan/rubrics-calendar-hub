@@ -23,12 +23,15 @@ import { useStore } from '../store';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { CalendarIcon, X } from 'lucide-react';
+import { getRubricColors } from './RubricLegend';
 
 const DutyManagement = () => {
   const { users, rubrics, duties, addDuty, removeDuty, currentDate } = useStore();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(currentDate);
   const [selectedUser, setSelectedUser] = useState<string>('');
   const [selectedRubric, setSelectedRubric] = useState<RubricType | ''>('');
+  
+  const rubricColors = getRubricColors(rubrics);
 
   const handleAddDuty = () => {
     if (!selectedDate || !selectedUser || !selectedRubric) return;
@@ -39,7 +42,7 @@ const DutyManagement = () => {
     const newDuty: DutyWithUser = {
       id: Date.now().toString(),
       userId: selectedUser,
-      type: selectedRubric as RubricType,
+      type: selectedRubric,
       date: format(selectedDate, 'yyyy-MM-dd'),
       user,
     };
@@ -114,14 +117,17 @@ const DutyManagement = () => {
             
             <div className="space-y-2">
               <Label>Duty Type</Label>
-              <Select value={selectedRubric} onValueChange={setSelectedRubric as (value: string) => void}>
+              <Select value={selectedRubric} onValueChange={setSelectedRubric}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select duty type" />
                 </SelectTrigger>
                 <SelectContent>
-                  {rubrics.map(rubric => (
+                  {rubrics.map((rubric) => (
                     <SelectItem key={rubric} value={rubric}>
-                      {rubric}
+                      <div className="flex items-center">
+                        <span className={`inline-block w-3 h-3 rounded-full mr-2 ${rubricColors[rubric]}`}></span>
+                        {rubric}
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -150,7 +156,8 @@ const DutyManagement = () => {
                 <div key={duty.id} className="p-3 flex items-center justify-between">
                   <div>
                     <div className="font-medium">{format(new Date(duty.date), 'MMM d, yyyy')}</div>
-                    <div className="text-sm">
+                    <div className="text-sm flex items-center">
+                      <span className={`inline-block w-3 h-3 rounded-full mr-2 ${rubricColors[duty.type]}`}></span>
                       <span className="font-medium">{duty.type}:</span> {duty.user.name}
                     </div>
                   </div>
