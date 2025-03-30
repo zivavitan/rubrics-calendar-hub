@@ -92,18 +92,28 @@ export const downloadCalendarInvite = async (duty: DutyWithUser): Promise<void> 
 
 /**
  * Send a calendar invitation via email
+ * 
+ * Update the type definition to make the function accept partial SMTP config
+ * and check all required fields are present before proceeding
  */
 export const sendCalendarInviteEmail = async (
   duty: DutyWithUser, 
   smtpConfig: {
-    host: string;
-    port: number;
-    username: string;
-    password: string;
-    from: string;
+    host?: string;
+    port?: number;
+    username?: string;
+    password?: string;
+    from?: string;
   }
 ): Promise<boolean> => {
   try {
+    // Check if all required SMTP configuration fields are present
+    if (!smtpConfig.host || !smtpConfig.port || !smtpConfig.username || 
+        !smtpConfig.password || !smtpConfig.from) {
+      console.error('Incomplete SMTP configuration');
+      return false;
+    }
+    
     // In a real app, you would use a server-side endpoint to send emails
     // We'll implement a mock function that simulates sending an email
     console.log('Sending calendar invite via email with config:', smtpConfig);
