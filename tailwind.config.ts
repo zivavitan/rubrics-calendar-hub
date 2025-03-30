@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -51,6 +52,15 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				calendar: {
+					DEFAULT: 'hsl(var(--calendar-background))',
+					foreground: 'hsl(var(--calendar-foreground))',
+					muted: 'hsl(var(--calendar-muted))',
+					'muted-foreground': 'hsl(var(--calendar-muted-foreground))',
+					today: 'hsl(var(--calendar-today))',
+					duty: 'hsl(var(--calendar-duty))',
+					'duty-foreground': 'hsl(var(--calendar-duty-foreground))',
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
