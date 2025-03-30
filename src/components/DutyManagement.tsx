@@ -22,8 +22,10 @@ import { DutyWithUser, RubricType } from '@/types';
 import { useStore } from '../store';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { CalendarIcon, X } from 'lucide-react';
+import { CalendarIcon, Mail, X } from 'lucide-react';
 import { getRubricColors } from './RubricLegend';
+import { generateCalendarInvite } from '@/utils/calendarUtils';
+import { toast } from 'sonner';
 
 const DutyManagement = () => {
   const { users, rubrics, duties, addDuty, removeDuty, currentDate } = useStore();
@@ -60,6 +62,17 @@ const DutyManagement = () => {
     return dutyDate.getMonth() === selectedDate?.getMonth() && 
            dutyDate.getFullYear() === selectedDate?.getFullYear();
   });
+  
+  // Handle sending calendar invitation
+  const handleSendInvite = (duty: DutyWithUser) => {
+    try {
+      generateCalendarInvite(duty);
+      toast.success(`Calendar invitation generated for ${duty.user.name}`);
+    } catch (error) {
+      console.error('Error generating calendar invitation:', error);
+      toast.error('Failed to generate calendar invitation');
+    }
+  };
 
   return (
     <Card className="w-full">
@@ -161,14 +174,25 @@ const DutyManagement = () => {
                       <span className="font-medium">{duty.type}:</span> {duty.user.name}
                     </div>
                   </div>
-                  <Button 
-                    size="icon" 
-                    variant="ghost" 
-                    onClick={() => removeDuty(duty.id)}
-                    className="h-8 w-8"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
+                  <div className="flex space-x-2">
+                    <Button 
+                      size="icon" 
+                      variant="outline" 
+                      onClick={() => handleSendInvite(duty)}
+                      className="h-8 w-8"
+                      title="Send Calendar Invitation"
+                    >
+                      <Mail className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      size="icon" 
+                      variant="ghost" 
+                      onClick={() => removeDuty(duty.id)}
+                      className="h-8 w-8"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               ))
             )}
