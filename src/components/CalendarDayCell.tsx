@@ -39,7 +39,7 @@ const CalendarDayCell: React.FC<CalendarDayCellProps> = ({ date, isToday, isCurr
   return (
     <div 
       className={cn(
-        "calendar-day border p-1 transition-colors min-h-[100px]",
+        "calendar-day border p-1 transition-colors",
         isToday ? "bg-calendar-today" : "",
         isCurrentMonth ? "" : "text-gray-400 bg-gray-50",
       )}
@@ -57,8 +57,8 @@ const CalendarDayCell: React.FC<CalendarDayCellProps> = ({ date, isToday, isCurr
         )}
       </div>
       
-      {duties.length > 0 ? (
-        <ScrollArea className="h-[70px]">
+      {duties.length > 0 && (
+        <div className="overflow-y-auto custom-scrollbar h-[80px] pr-1">
           <div className="space-y-1">
             {Object.entries(dutyGroups).map(([type, typeDuties]) => (
               <div key={type} className={cn("rounded-sm p-1", rubricColors[type as RubricType])}>
@@ -75,8 +75,8 @@ const CalendarDayCell: React.FC<CalendarDayCellProps> = ({ date, isToday, isCurr
               </div>
             ))}
           </div>
-        </ScrollArea>
-      ) : null}
+        </div>
+      )}
     </div>
   );
 };
