@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
   addDays, 
   endOfMonth, 
@@ -22,6 +22,15 @@ const Calendar = () => {
   // Get today's duties
   const todayString = format(new Date(), 'yyyy-MM-dd');
   const todayDuties = getDutiesForDate(todayString);
+  
+  // Log data to help diagnose issues
+  useEffect(() => {
+    console.log("Calendar component rendered", {
+      currentDate,
+      todayString,
+      todayDuties
+    });
+  }, [currentDate, todayString, todayDuties]);
   
   // Generate the days of the month to display
   const generateCalendarDays = () => {
