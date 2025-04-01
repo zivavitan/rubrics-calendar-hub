@@ -98,17 +98,17 @@
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 1px;
+  gap: 2px;
 }
 
 .calendar-day {
-  aspect-ratio: auto; /* Changed from 1/1 to auto to allow proper scaling */
+  aspect-ratio: auto;
   position: relative;
 }
 
 /* Styling for the scrollbar in calendar cells */
 .scrollbar-thin::-webkit-scrollbar {
-  width: 4px;
+  width: 2px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-track {

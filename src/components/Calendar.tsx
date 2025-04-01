@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { 
   addDays, 
@@ -15,6 +14,16 @@ import { useStore } from '../store';
 import { cn } from '@/lib/utils';
 import CalendarDayCell from './CalendarDayCell';
 import { Calendar as CalendarIcon, User } from 'lucide-react';
+import { RubricType } from '@/types';
+import { ScrollArea } from './ui/scroll-area';
+
+const rubricColors: Record<RubricType, string> = {
+  "Primary On-Call": "bg-red-500",
+  "Secondary On-Call": "bg-orange-500",
+  "Operations": "bg-blue-500",
+  "Support": "bg-green-500",
+  "Maintenance": "bg-purple-500"
+};
 
 const Calendar = () => {
   const { currentDate, getDutiesForDate } = useStore();
@@ -86,20 +95,26 @@ const Calendar = () => {
         </div>
         
         {todayDuties.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-            {todayDuties.map(duty => (
-              <div 
-                key={duty.id} 
-                className="flex items-center gap-2 p-2 border rounded-md bg-muted/20"
-              >
-                <User className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <div className="text-sm font-medium">{duty.user.name}</div>
-                  <div className="text-xs text-muted-foreground">{duty.type}</div>
+          <ScrollArea className="h-[120px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+              {todayDuties.map(duty => (
+                <div 
+                  key={duty.id} 
+                  className={cn(
+                    "flex items-center gap-2 p-2 border rounded-md",
+                    "text-white",
+                    rubricColors[duty.type]
+                  )}
+                >
+                  <User className="h-4 w-4 text-white/90" />
+                  <div>
+                    <div className="text-sm font-medium">{duty.user.name}</div>
+                    <div className="text-xs opacity-90">{duty.type}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </ScrollArea>
         ) : (
           <p className="text-muted-foreground text-sm">No engineers on duty today</p>
         )}
