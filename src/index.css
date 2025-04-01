@@ -102,8 +102,22 @@
 }
 
 .calendar-day {
-  aspect-ratio: 1 / 1;
+  aspect-ratio: auto; /* Changed from 1/1 to auto to allow proper scaling */
   position: relative;
+}
+
+/* Styling for the scrollbar in calendar cells */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 20px;
 }
 
 .rubric {

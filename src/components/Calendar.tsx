@@ -14,9 +14,14 @@ import {
 import { useStore } from '../store';
 import { cn } from '@/lib/utils';
 import CalendarDayCell from './CalendarDayCell';
+import { Calendar as CalendarIcon, User } from 'lucide-react';
 
 const Calendar = () => {
-  const { currentDate } = useStore();
+  const { currentDate, getDutiesForDate } = useStore();
+  
+  // Get today's duties
+  const todayString = format(new Date(), 'yyyy-MM-dd');
+  const todayDuties = getDutiesForDate(todayString);
   
   // Generate the days of the month to display
   const generateCalendarDays = () => {
@@ -63,18 +68,48 @@ const Calendar = () => {
   ));
 
   return (
-    <div className="bg-white rounded-lg shadow p-4">
-      <div className="mb-4">
-        <h2 className="text-xl font-bold text-center">
-          {format(currentDate, 'MMMM yyyy')}
-        </h2>
+    <div className="space-y-4">
+      {/* On Duty Today Section */}
+      <div className="bg-white rounded-lg shadow p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <CalendarIcon className="h-5 w-5 text-primary" />
+          <h2 className="text-lg font-bold">On Duty Today</h2>
+        </div>
+        
+        {todayDuties.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+            {todayDuties.map(duty => (
+              <div 
+                key={duty.id} 
+                className="flex items-center gap-2 p-2 border rounded-md bg-muted/20"
+              >
+                <User className="h-4 w-4 text-muted-foreground" />
+                <div>
+                  <div className="text-sm font-medium">{duty.user.name}</div>
+                  <div className="text-xs text-muted-foreground">{duty.type}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-muted-foreground text-sm">No engineers on duty today</p>
+        )}
       </div>
-      
-      <div className="calendar-grid mb-2">
-        {dayLabels}
+
+      {/* Calendar Section */}
+      <div className="bg-white rounded-lg shadow p-4">
+        <div className="mb-4">
+          <h2 className="text-xl font-bold text-center">
+            {format(currentDate, 'MMMM yyyy')}
+          </h2>
+        </div>
+        
+        <div className="calendar-grid mb-2">
+          {dayLabels}
+        </div>
+        
+        {generateCalendarDays()}
       </div>
-      
-      {generateCalendarDays()}
     </div>
   );
 };

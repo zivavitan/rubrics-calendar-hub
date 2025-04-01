@@ -25,10 +25,13 @@ const CalendarDayCell: React.FC<CalendarDayCellProps> = ({ date, isToday, isCurr
   const dateString = format(date, 'yyyy-MM-dd');
   const duties = getDutiesForDate(dateString);
 
+  // For better spacing when there are multiple duties
+  const shouldScroll = duties.length > 2;
+
   return (
     <div 
       className={cn(
-        "calendar-day border p-1 transition-colors",
+        "calendar-day border p-1 transition-colors min-h-[80px]",
         isToday ? "bg-calendar-today" : "",
         isCurrentMonth ? "" : "text-gray-400 bg-gray-50",
       )}
@@ -37,18 +40,24 @@ const CalendarDayCell: React.FC<CalendarDayCellProps> = ({ date, isToday, isCurr
         {format(date, 'd')}
       </div>
       
-      <div className="space-y-1">
+      <div className={cn(
+        "space-y-1", 
+        shouldScroll ? "max-h-[50px] overflow-y-auto scrollbar-thin" : ""
+      )}>
         {duties.map((duty) => (
           <div 
             key={duty.id}
             className={cn(
-              "rubric rounded-sm",
+              "text-xs p-1 rounded-sm",
               rubricColors[duty.type]
             )}
           >
-            <span className="text-white truncate">
-              {duty.type}: {duty.user.name}
-            </span>
+            <div className="text-white truncate text-[10px]">
+              {duty.type}
+            </div>
+            <div className="text-white truncate text-[10px] font-medium">
+              {duty.user.name}
+            </div>
           </div>
         ))}
       </div>
