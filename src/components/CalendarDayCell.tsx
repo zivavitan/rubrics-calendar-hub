@@ -4,7 +4,6 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useStore } from '../store';
 import { RubricType } from '@/types';
-import { ScrollArea } from './ui/scroll-area';
 import { Badge } from './ui/badge';
 
 interface CalendarDayCellProps {

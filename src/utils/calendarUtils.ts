@@ -1,33 +1,40 @@
 
 import { createEvents } from 'ics';
-import { format, parse } from 'date-fns';
+import { format, parse, addDays } from 'date-fns';
 import { DutyWithUser } from '@/types';
 
 /**
  * Generate an iCalendar (.ics) file for a duty assignment
+ * Duties are set to run from 6PM to 8AM the next day
  */
 export const generateCalendarData = (duty: DutyWithUser): Promise<string> => {
   return new Promise((resolve, reject) => {
     // Parse the date string to a Date object
     const dutyDate = parse(duty.date, 'yyyy-MM-dd', new Date());
     
-    // Create an end date (24 hours later)
-    const endDate = new Date(dutyDate);
-    endDate.setDate(endDate.getDate() + 1);
+    // Set start time to 6:00 PM on duty date
+    const startDate = new Date(dutyDate);
+    startDate.setHours(18, 0, 0, 0); // 6:00 PM
+    
+    // Set end time to 8:00 AM the next day
+    const endDate = addDays(new Date(dutyDate), 1);
+    endDate.setHours(8, 0, 0, 0); // 8:00 AM next day
     
     // Format dates for iCalendar format [year, month, day, hour, minute]
     const start: [number, number, number, number, number] = [
-      dutyDate.getFullYear(),
-      dutyDate.getMonth() + 1, // Months are 0-indexed in JS
-      dutyDate.getDate(),
-      0, 0 // Start at midnight
+      startDate.getFullYear(),
+      startDate.getMonth() + 1, // Months are 0-indexed in JS
+      startDate.getDate(),
+      startDate.getHours(),
+      startDate.getMinutes()
     ];
     
     const end: [number, number, number, number, number] = [
       endDate.getFullYear(),
       endDate.getMonth() + 1,
       endDate.getDate(),
-      0, 0 // End at midnight
+      endDate.getHours(),
+      endDate.getMinutes()
     ];
 
     // Create the event
@@ -36,7 +43,7 @@ export const generateCalendarData = (duty: DutyWithUser): Promise<string> => {
         start,
         end,
         title: `${duty.type} Duty`,
-        description: `${duty.user.name} is on ${duty.type} duty`,
+        description: `${duty.user.name} is on ${duty.type} duty from 6:00 PM to 8:00 AM the next morning`,
         organizer: { name: 'Duty Calendar', email: 'duty@example.com' },
         attendees: [
           {
@@ -54,7 +61,7 @@ export const generateCalendarData = (duty: DutyWithUser): Promise<string> => {
           {
             action: 'display',
             description: `${duty.type} Duty Reminder`,
-            trigger: { hours: 24, before: true }
+            trigger: { hours: 2, before: true }
           }
         ]
       }
@@ -93,8 +100,8 @@ export const downloadCalendarInvite = async (duty: DutyWithUser): Promise<void> 
 /**
  * Send a calendar invitation via email
  * 
- * Update the type definition to make the function accept partial SMTP config
- * and check all required fields are present before proceeding
+ * Note: This is a simulation - in a real application, you would 
+ * need a server-side component or email service integration
  */
 export const sendCalendarInviteEmail = async (
   duty: DutyWithUser, 
@@ -114,20 +121,20 @@ export const sendCalendarInviteEmail = async (
       return false;
     }
     
-    // In a real app, you would use a server-side endpoint to send emails
-    // We'll implement a mock function that simulates sending an email
-    console.log('Sending calendar invite via email with config:', smtpConfig);
-    console.log('Duty details:', duty);
-    
     // Generate the ICS data
     const icsData = await generateCalendarData(duty);
     
-    // Here, we would typically make an API call to a server endpoint that would send the email
-    // For the frontend-only demo, we'll simulate a successful API call
+    // In a real implementation, you would:
+    // 1. Make an API call to your backend service
+    // 2. The backend would use a library like Nodemailer to send the email with the ICS attachment
+    // 3. The email would be formatted as a calendar invitation
     
-    // Mock API call
+    console.log('SMTP Configuration:', smtpConfig);
+    console.log(`Duty: ${duty.type} for ${duty.user.name} on ${duty.date} (6PM-8AM)`);
+    console.log('ICS data generated successfully');
+    
+    // For this simulation, we'll return true after a delay to simulate sending
     return new Promise((resolve) => {
-      // Simulate network delay
       setTimeout(() => {
         // Simulate successful email sending
         resolve(true);
