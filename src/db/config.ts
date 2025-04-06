@@ -5,8 +5,8 @@ const dbConfig = {
   port: 5432,             // Default PostgreSQL port
   database: 'dutycalendar', // Your database name
   user: 'postgres',       // Your PostgreSQL username
-  password: 'postgres',   // Your PostgreSQL password
-  ssl: false,             // Set to true if your PostgreSQL requires SSL
+  password: 'mypassword', // Your PostgreSQL password
+  ssl: false,             // Set to false for local connections
 };
 
 export default dbConfig;
