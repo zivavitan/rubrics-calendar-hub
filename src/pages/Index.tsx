@@ -5,14 +5,9 @@ import CalendarControls from '@/components/CalendarControls';
 import RubricLegend from '@/components/RubricLegend';
 import Header from '@/components/Header';
 import { useStore } from '@/store';
-import Login from '@/components/Login';
 
 const Index = () => {
   const { isAuthenticated } = useStore();
-
-  if (!isAuthenticated) {
-    return <Login />;
-  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
