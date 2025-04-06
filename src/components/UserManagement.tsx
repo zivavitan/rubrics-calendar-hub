@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,10 +28,8 @@ const UserManagement = () => {
   const handleAddUser = () => {
     if (!newUser.name || !newUser.email || !newUser.phone) return;
     
-    addUser({
-      ...newUser,
-      id: Date.now().toString() // Simple id generation
-    });
+    // Let the API generate the ID
+    addUser(newUser);
     
     // Clear form
     setNewUser({

@@ -1,5 +1,6 @@
+
 import { create } from 'zustand';
-import { DutyWithUser, RubricType, User } from '../types';
+import { DutyWithUser, RubricType, User, Duty } from '../types';
 import { addMonths, format, subMonths } from 'date-fns';
 import { userAPI, dutyAPI, rubricAPI, authAPI } from '@/services/api';
 import { toast } from 'sonner';
