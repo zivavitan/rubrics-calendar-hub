@@ -23,7 +23,7 @@ const Index = () => {
       
       <footer className="bg-white border-t py-4">
         <div className="container text-center text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} Duty Calendar - All rights reserved
+          &copy; {new Date().getFullYear()} EMET DORCOM Duty Calendar - All rights reserved
         </div>
       </footer>
     </div>

@@ -11,9 +11,16 @@ const Header = () => {
   return (
     <header className="bg-white border-b sticky top-0 z-10">
       <div className="container flex items-center justify-between py-4">
-        <div className="flex items-center space-x-2">
-          <CalendarCheck className="h-6 w-6 text-primary" />
-          <h1 className="text-xl font-bold">Duty Calendar</h1>
+        <div className="flex items-center space-x-4">
+          <img 
+            src="/lovable-uploads/2a839139-d303-4b85-b761-404de362fb3d.png" 
+            alt="EMET DORCOM Logo" 
+            className="h-8"
+          />
+          <div className="flex items-center space-x-2">
+            <CalendarCheck className="h-6 w-6 text-primary" />
+            <h1 className="text-xl font-bold">Duty Calendar</h1>
+          </div>
         </div>
 
         <div className="flex items-center space-x-4">
